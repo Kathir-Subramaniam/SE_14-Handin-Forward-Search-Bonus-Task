@@ -40,20 +40,20 @@ def get_inferrable_knowledge(knowledge):
     inferrable_knowledge = []
     for sentence in knowledge.conjuncts:
         if type(sentence) is And:
-            print(f"And: {sentence.conjuncts}")
             if is_in(knowledge, sentence.conjuncts[0]) and not is_in(knowledge, sentence.conjuncts[1]):
+                print(f"And: {sentence.conjuncts}")
                 inferrable_knowledge.append(sentence.conjuncts[1])
             if not is_in(knowledge, sentence.conjuncts[0]) and is_in(knowledge, sentence.conjuncts[1]):
                 inferrable_knowledge.append(sentence.conjuncts[0])  
         if type(sentence) is Or:
-            print(f"Or: {sentence.disjuncts}")
             if (is_in(knowledge, sentence.disjuncts[0]) or is_in(knowledge, Not(sentence.disjuncts[0]))) and not is_in(knowledge, sentence.disjuncts[1]):
+                print(f"Or: {sentence.disjuncts}")
                 inferrable_knowledge.append(sentence.disjuncts[1])
             if not is_in(knowledge, sentence.disjuncts[0]) and (is_in(knowledge, sentence.disjuncts[1]) or is_in(knowledge, Not(sentence.disjuncts[1]))):
                 inferrable_knowledge.append(sentence.disjuncts[0])   
         if type(sentence) is Implication:
-            # print(sentence.antecedent, sentence.consequent)
             if is_in(knowledge,sentence.antecedent) and not is_in(knowledge,sentence.consequent):
+                print(f"Implication: {sentence.antecedent} -> {sentence.consequent}")
                 inferrable_knowledge.append(sentence.consequent)
         if type(sentence) is Biconditional:
             left_known = is_in(knowledge,sentence.left)
@@ -63,7 +63,7 @@ def get_inferrable_knowledge(knowledge):
                 inferrable_knowledge.append(sentence.right)
             elif right_known and not left_known:
                 inferrable_knowledge.append(sentence.left)
-    print(f"Inferred knowledge: {inferrable_knowledge}")
+    print(f"New Inferred knowledge: {inferrable_knowledge}")
     return inferrable_knowledge
 
             
